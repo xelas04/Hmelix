@@ -1,0 +1,94 @@
+openapi: 3.0.4
+info:
+  title: hmelix-catalog
+  version: '0.0.1'
+servers:
+  - url: https://localhost:7162/
+paths: 
+  /catalog:
+
+    get: 
+      summary: Метод получения списка продуктов
+      tags: 
+        - Catalog
+      operationId: getAll
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Номер страницы
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+          description: Количество записей на странице
+
+      responses: 
+
+        '200':
+          description: Успешный ответ со списком продуктов
+          content: 
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/Products'
+
+        default: 
+          description: Не успешный ответ
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+
+
+
+components:
+  schemas: 
+    Product:
+      type: object
+      required:
+        - name
+        - status
+      properties:
+        product_id:
+          type: string
+          example: 618
+        name:
+          type: string
+          example: Blood
+        price:
+          type: number
+          format: decimal
+          example: 12.45
+        status:
+          type: string
+          enum:
+            - active
+            - removed
+          description: Статус продукта
+        created_at:
+          type: string
+          format: timestamptz
+    Products:
+      type: array
+      items:
+        $ref: '#/components/schemas/Product'
+    Error:
+      type: object
+      required: 
+        - code
+        - message
+      properties: 
+        code:
+          type: integer
+        message:
+          type: string
+
