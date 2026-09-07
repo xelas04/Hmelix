@@ -5,7 +5,7 @@ info:
 servers:
   - url: https://localhost:7162/
 paths: 
-  /catalog:
+  /api/v1/catalog:
 
     get: 
       summary: Метод получения списка продуктов
@@ -32,23 +32,18 @@ paths:
           description: Количество записей на странице
 
       responses: 
-
         '200':
           description: Успешный ответ со списком продуктов
           content: 
             application/json: 
               schema:
                 $ref: '#/components/schemas/Products'
-
         default: 
           description: Не успешный ответ
           content: 
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-
-
-
 
 components:
   schemas: 
@@ -91,4 +86,3 @@ components:
           type: integer
         message:
           type: string
-
