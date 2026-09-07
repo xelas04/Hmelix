@@ -35,18 +35,21 @@ paths:
           description: Успешный ответ со списком продуктов
           content: 
             application/json: 
-              schema:
-                $ref: '#/components/schemas/Products'
-                pagination:
-                  tipe: object
-                  required:
-                    - page
-                    - pegeSize
-                  properties:
-                    page: 
-                      type: integer
-                    pageSize:
-                      type: integer
+              schema: 
+                type: object
+                properties: 
+                  items:
+                    $ref: '#/components/schemas/Products'
+                  pagination:
+                    type: object
+                    required:
+                      - page
+                      - pageSize
+                    properties:
+                      page: 
+                        type: integer
+                      pageSize:
+                        type: integer
         default: 
           description: Не успешный ответ
           content: 
@@ -68,7 +71,7 @@ paths:
           schema:
             type: string
             minimum: 2
-            maaximum: 50
+            maximum: 50
             description: Поиск по названию
         - name: page
           in: query
@@ -93,17 +96,20 @@ paths:
           content: 
             application/json: 
               schema:
-                $ref: '#/components/schemas/Product'
-                pagination:
-                  tipe: object
-                  required:
-                    - page
-                    - pegeSize
-                  properties:
-                    page: 
-                      type: integer
-                    pageSize:
-                      type: integer
+                type: object
+                properties: 
+                  items:
+                    $ref: '#/components/schemas/Product'
+                  pagination:
+                    type: object
+                    required:
+                      - page
+                      - pageSize
+                    properties:
+                      page: 
+                        type: integer
+                      pageSize:
+                        type: integer
         default: 
           description: Не успешный ответ
           content: 
