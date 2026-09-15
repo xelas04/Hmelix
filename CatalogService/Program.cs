@@ -1,6 +1,10 @@
-var builder = WebApplication.CreateBuilder(args); // инициализируем строителя приложений
+using CatalogService.logic.services;
 
-builder.Services.AddControllers(); // добавляем контроллеры
+var builder = WebApplication.CreateBuilder(args); // инициализируем строителя приложений
+//
+builder.Services.AddControllers();
+builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
+builder.Services.AddScoped<IProductsService, ProductsService>();
 
 var app = builder.Build(); // собираем приложение
 
@@ -11,5 +15,4 @@ app.MapGet("/", () => "gta7");
 
 app.MapControllers();
 
-// запускаем
 app.Run();
