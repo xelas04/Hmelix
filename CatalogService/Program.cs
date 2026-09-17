@@ -1,6 +1,7 @@
 using CatalogService.domain.repositories;
 using CatalogService.domain.repositories.interfaces;
 using CatalogService.logic.interfaces;
+using CatalogService.logic.services;
 
 var builder = WebApplication.CreateBuilder(args);
 

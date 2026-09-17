@@ -1,7 +1,8 @@
 ﻿using CatalogService.domain.entities;
 using CatalogService.domain.repositories.interfaces;
+using CatalogService.logic.interfaces;
 
-namespace CatalogService.logic.interfaces
+namespace CatalogService.logic.services
 {
     public class ProductsService : IProductsService
     {

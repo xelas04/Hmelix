@@ -1,5 +1,4 @@
 ﻿using CatalogService.domain.entities;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CatalogService.logic.interfaces
 {
