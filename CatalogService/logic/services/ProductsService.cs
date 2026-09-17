@@ -1,7 +1,7 @@
 ﻿using CatalogService.domain.entities;
-using CatalogService.logic.services;
+using CatalogService.domain.repositories.interfaces;
 
-namespace CatalogService.logic.services
+namespace CatalogService.logic.interfaces
 {
     public class ProductsService : IProductsService
     {
@@ -15,15 +15,16 @@ namespace CatalogService.logic.services
         // внедряется зависимость, чтобы дойти до БД
 
 
-        public async Task<List<Product>> GetProductsAsync()
+        public async Task<List<Product>> GetProductsAsync(int page, int pageSize)
         {
-            var products = await _repository.GetProductsAsync();
+            var offset = (page - 1) * pageSize;
+            var products = await _repository.GetProductsAsync(pageSize, offset);
             return products;
         }
 
-        public async Task<Product?> GetProductByNameAsync(string search_name)
+        public async Task<Product?> GetProductByNameAsync(string searchQuery)
         {
-            var product = await _repository.GetProductByNameAsync(search_name);
+            var product = await _repository.GetProductByNameAsync(searchQuery);
             return product;
         }
                 

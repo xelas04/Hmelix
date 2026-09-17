@@ -1,5 +1,4 @@
-﻿using CatalogService.domain.entities;
-using CatalogService.logic.services;
+﻿using CatalogService.logic.interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CatalogService.controllers;
@@ -17,20 +16,30 @@ public class ProductsController : ControllerBase
     }
     // внедряется зависимость, чтобы вызывать логику ProductsService
 
-
-    // /api/products
+    // api/products
     [HttpGet]
-    public async Task<IActionResult> GetProducts()
+    public async Task<IActionResult> GetProducts(// Здесь сразу пагинацию через query параметры
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10)
     {
-        var products = await _productService.GetProductsAsync();
+        // валидация
+        if (page < 1) page = 1;
+        if (pageSize < 1) pageSize = 10;
+        if (pageSize > 100) pageSize = 100;
+
+        var products = await _productService.GetProductsAsync(page, pageSize);
         return Ok(products);
     }
 
-    // /api/products/search_name
-    [HttpGet("{search_name}")]
-    public async Task<IActionResult> GetProductByName(string search_name)
+    // Лучше HttpPost /search. В body будет searchQuery
+
+    [HttpPost("search")]
+    public async Task<IActionResult> GetProductByName([FromBody] string searchQuery)
     {
-        var products = await _productService.GetProductByNameAsync(search_name);
+        if (string.IsNullOrWhiteSpace(searchQuery))
+            return BadRequest("searchQuery не может быть пустым");
+        
+        var products = await _productService.GetProductByNameAsync(searchQuery);
         return Ok(products);
     }
 }

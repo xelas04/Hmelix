@@ -1,17 +1,20 @@
-using CatalogService.logic.services;
+using CatalogService.domain.repositories;
+using CatalogService.domain.repositories.interfaces;
+using CatalogService.logic.interfaces;
 
-var builder = WebApplication.CreateBuilder(args); // инициализируем строителя приложений
-//
+var builder = WebApplication.CreateBuilder(args);
+
+// билдим слои
 builder.Services.AddControllers();
 builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
 builder.Services.AddScoped<IProductsService, ProductsService>();
 
-var app = builder.Build(); // собираем приложение
+var app = builder.Build();
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
 
-app.MapGet("/", () => "gta7");
+app.MapGet("/", () => "CatalogService");
 
 app.MapControllers();
 

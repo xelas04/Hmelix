@@ -1,12 +1,13 @@
 ﻿using CatalogService.domain.entities;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace CatalogService.logic.services
+namespace CatalogService.logic.interfaces
 {
     public interface IProductsService
     {
-        public Task<List<Product>> GetProductsAsync();
+        public Task<List<Product>> GetProductsAsync(int page, int pageSize);
 
-        public Task<Product?> GetProductByNameAsync(string search_name);
+        public Task<Product?> GetProductByNameAsync(string searchQuery);
         
     }
 }
