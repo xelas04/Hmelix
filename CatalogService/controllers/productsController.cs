@@ -28,7 +28,13 @@ public class ProductsController : ControllerBase
         if (pageSize > 100) return BadRequest("Указано слишком большое количество строк");
 
         var products = await _productService.GetProductsAsync(page, pageSize);
-        return Ok(products);
+        var totalCount = await _productService.GetTotalCountAsync();
+
+        return Ok(new
+        {
+            products,
+            totalCount
+        });
     }
 
     // Лучше HttpPost /search. В body будет searchQuery
@@ -40,6 +46,7 @@ public class ProductsController : ControllerBase
             return BadRequest("searchQuery не может быть пустым");
         
         var products = await _productService.GetProductByNameAsync(searchQuery);
+
         return Ok(products);
     }
 }

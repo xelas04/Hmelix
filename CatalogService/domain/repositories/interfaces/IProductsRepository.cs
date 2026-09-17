@@ -9,5 +9,7 @@ namespace CatalogService.domain.repositories.interfaces
 
         public Task<Product?> GetProductByNameAsync(string searchQuery);
 
+        public Task<int> GetTotalCountAsync();
+
     }
 }

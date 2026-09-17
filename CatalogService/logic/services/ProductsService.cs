@@ -23,11 +23,18 @@ namespace CatalogService.logic.services
             return products;
         }
 
+
         public async Task<Product?> GetProductByNameAsync(string searchQuery)
         {
             var product = await _repository.GetProductByNameAsync(searchQuery);
             return product;
         }
-                
+
+
+        public Task<int> GetTotalCountAsync()
+        {
+            return _repository.GetTotalCountAsync();
+        }
+
     }
 }

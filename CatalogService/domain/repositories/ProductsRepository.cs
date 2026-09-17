@@ -16,7 +16,7 @@ namespace CatalogService.domain.repositories
         }
 
 
-        //
+        // GetProductByName
         public async Task<Product?> GetProductByNameAsync(string searchQuery)
         {
             // соединение с БД
@@ -56,7 +56,7 @@ namespace CatalogService.domain.repositories
         }
 
 
-        //
+        // GetProducts
         public async Task<List<Product>> GetProductsAsync(int limit, int offset)
         {
             var products = new List<Product>(); // 
@@ -70,7 +70,7 @@ namespace CatalogService.domain.repositories
                 @"SELECT productid, name, price 
                 FROM products 
                 ORDER BY productid 
-                LIMIT @limit OFFSET @offset", // пагинация че где
+                LIMIT @limit OFFSET @offset",
                 connection
             );
 
@@ -94,5 +94,23 @@ namespace CatalogService.domain.repositories
             return products;
 
         }
+
+
+        // totalCount
+        public async Task<int> GetTotalCountAsync() // возвращаем просто int
+        {
+            // соединение с БД
+            await using var connection = new NpgsqlConnection(_connectionString);
+            await connection.OpenAsync();
+
+            // SQL-команду
+            await using var cmd = new NpgsqlCommand(
+                "SELECT COUNT(*) FROM products", connection);
+
+            // из за возвращаемого типа COUNT такая конструкция
+            var count = (long)(await cmd.ExecuteScalarAsync())!;
+            return (int)count;
+        }
+
     }
 }
