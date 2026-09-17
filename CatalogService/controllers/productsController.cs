@@ -18,14 +18,14 @@ public class ProductsController : ControllerBase
 
     // api/products
     [HttpGet]
-    public async Task<IActionResult> GetProducts(// Здесь сразу пагинацию через query параметры
+    public async Task<IActionResult> GetProducts( // Здесь сразу пагинацию через query параметры
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 10)
     {
         // валидация
-        if (page < 1) page = 1;
-        if (pageSize < 1) pageSize = 10;
-        if (pageSize > 100) pageSize = 100;
+        if (page < 1) return BadRequest("Неверно указан номер страницы");
+        if (pageSize < 1) return BadRequest("Неверно указано количество строк");
+        if (pageSize > 100) return BadRequest("Указано слишком большое количество строк");
 
         var products = await _productService.GetProductsAsync(page, pageSize);
         return Ok(products);
