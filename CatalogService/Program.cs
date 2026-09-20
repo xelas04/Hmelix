@@ -1,15 +1,22 @@
-var builder = WebApplication.CreateBuilder(args); // инициализируем строителя приложений
+using CatalogService.domain.repositories;
+using CatalogService.domain.repositories.interfaces;
+using CatalogService.logic.interfaces;
+using CatalogService.logic.services;
 
-builder.Services.AddControllers(); // добавляем контроллеры
+var builder = WebApplication.CreateBuilder(args);
 
-var app = builder.Build(); // собираем приложение
+// билдим слои
+builder.Services.AddControllers();
+builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
+builder.Services.AddScoped<IProductsService, ProductsService>();
+
+var app = builder.Build();
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
 
-app.MapGet("/", () => "gta7");
+app.MapGet("/", () => "CatalogService");
 
 app.MapControllers();
 
-// запускаем
 app.Run();

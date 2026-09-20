@@ -5,15 +5,17 @@ CREATE DATABASE catalog
     CONNECTION LIMIT = -1
 
 CREATE TABLE products (
-	product_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-	name VARCHAR(50) NOT NULL,
-	price NUMERIC(10, 2)
+	ProductId INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+	Name VARCHAR(50) NOT NULL,
+	Price NUMERIC(10, 2)
 );
 
-SELECT *
-FROM products
-LIMIT 10 OFFSET 0;
+@"SELECT productid, name, price 
+FROM products 
+ORDER BY productid 
+LIMIT 10 OFFSET 0";
 
-SELECT *
+@"SELECT productid, name, price
 FROM products
-WHERE name LIKE search_name;
+WHERE Name
+LIKE @searchQuery"
