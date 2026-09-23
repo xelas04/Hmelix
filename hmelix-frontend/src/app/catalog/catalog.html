@@ -1,1 +1,17 @@
-<p>catalog works!</p>
+
+<!-- показывает данные из signals -->
+
+<p>список продуктов с пагинацией</p>
+@if (loading()) {
+  <p>Загрузка...</p>
+} @else if (error()) {
+  <p>{{ error() }}</p>
+} @else {
+    <p>Всего товаров: {{ totalCount() }}</p>
+  @for (product of products(); track product.productid) {
+    <div class="card">
+      <h3>{{ product.name }}</h3>
+      <p>{{ product.price | currency:'RUB ' }}</p>
+    </div>
+  }
+}
