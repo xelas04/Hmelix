@@ -9,6 +9,6 @@ export class CatalogService {
 
   // запрос на бэк
   getProducts() { 
-    return this.http.get<ProductsResponse>('/api/products');
+    return this.http.get<ProductsResponse>('/api/products?page=1&pageSize=12');
   }
 }

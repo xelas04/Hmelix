@@ -1,3 +1,70 @@
-.spacer {
-    flex: 1 1 auto;
+.header {
+  position: fixed; // прилипает к верху
+  top: 0;
+  left: 0;
+  right: 0; // растянуть на всю ширину
+  z-index: 100; // поверх контента при скролле
+  height: 66px;
+  background: #201E1D; // тёмный фон
+  // Отступы по бокам (чтобы контент не прилипал к краям)
+  //padding: 32px;
+  box-shadow: 0 3px 0 0 #5CC48C;
+}
+
+.header__container {
+  margin-inline: auto;
+  height: 66px;
+  //border-bottom: 3px solid #4ade80;
+}
+
+.header__search{
+  margin-right: auto;
+  border-radius: 2%;
+  border: 0;
+  padding: 0;
+  color: #F3F2F2;
+  background: #F3F2F21A;
+  width: 430px;
+  height: 38px;
+  //overflow: hidden;
+}
+
+.header__nav{
+  display:flex;
+  justify-content:space-between;
+  align-items: center;
+  padding: 18.5px 32px;
+  height: 66px;
+}
+
+.header__list{
+  display: flex;
+  gap: 22px;
+  margin: 0;
+  padding-left: 0;
+}
+
+.header__list-logo{
+  margin-right: 26px;
+  letter-spacing: -0.42px;
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.header__list-item{
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0;
+  
+  &.active {
+    color: #5CC48C;
+  }
+}
+
+a{
+  color: #F3F2F2;
+}
+
+ul{
+  //font-size: 14px;
 }

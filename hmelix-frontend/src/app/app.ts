@@ -1,14 +1,13 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { Header } from './header/header';
 
 @Component({
-  imports: [RouterOutlet, Header],
   selector: 'app-root',
-
-  styleUrl: './app.scss',
+  imports: [RouterOutlet, NzLayoutModule, NzMenuModule, Header],
   templateUrl: './app.html',
+  styleUrl: './app.scss',
 })
-export class App {
-  protected readonly title = signal('hmelix-frontend');
-}
+export class App {}

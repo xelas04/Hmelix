@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 
 @Component({
-  imports: [MatToolbarModule, RouterLink],
+  imports: [RouterLink, RouterLinkActive, NzBreadCrumbModule],
   selector: 'app-header',
+  
   styleUrl: './header.scss',
   templateUrl: './header.html',
 })

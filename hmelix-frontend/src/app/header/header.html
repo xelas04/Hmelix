@@ -1,12 +1,45 @@
 <!-- от routerLink смотрим в app.routes.ts -->
-<mat-toolbar>
-  <a mat-button routerLink="/">Хмеликс</a>
 
-  <span class="spacer"></span>
+<header class="header">
+  <div class="header__container">
+    <nav class="header__nav">
 
-  <a mat-button routerLink="/api/catalog">Каталог</a>
+      <a 
+      class="header__list-logo" 
+      routerLink="/"
+      >Хмеликс</a>
+      
+      <div class="header__search">
+        <input
+          type="text"
+          class="header__search"
+          placeholder=" Поиск анализов, например ферритин"
+        />
+      </div>
 
-  <a mat-button routerLink="/api/cart">Корзина</a>
+      <ul class="header__list">
+        <a
+        class="header__list-item" 
+        routerLink="/api/catalog" 
+        routerLinkActive="active">
+          <!-- <img href="/hmelix-frontend/src/app/header/icons/catalog.svg"> -->
+          <span>Каталог</span>
+        </a>
 
-  <a mat-button routerLink="/api/user">Войти</a>
-</mat-toolbar>
+        <a 
+        class="header__list-item" 
+        routerLink="/api/cart" 
+        routerLinkActive="active"
+        >Корзина</a>
+
+        <a 
+        class="header__list-item" 
+        routerLink="/api/user" 
+        routerLinkActive="active"
+        >Войти</a>
+      </ul>
+
+    </nav>
+  </div>
+</header>
+

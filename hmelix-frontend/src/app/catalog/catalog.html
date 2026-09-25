@@ -1,17 +1,36 @@
 
 <!-- показывает данные из signals -->
 
-<p>список продуктов с пагинацией</p>
-@if (loading()) {
-  <p>Загрузка...</p>
-} @else if (error()) {
+<div class="catalog">
+  <p class="title">Каталог</p>
+
+  @if (loading()) {
+  <p class="catalog__load">Загрузка...</p>
+  } @else if (error()) {
   <p>{{ error() }}</p>
-} @else {
-    <p>Всего товаров: {{ totalCount() }}</p>
-  @for (product of products(); track product.productid) {
-    <div class="card">
-      <h3>{{ product.name }}</h3>
-      <p>{{ product.price | currency:'RUB ' }}</p>
-    </div>
-  }
-}
+  } @else {
+    <p class="catalog__total">{{ totalLabel() }}</p>  
+
+    <div class="container">
+      <div class="container__cards">
+
+        @for (product of products(); track product.productid) {
+
+          <div class="card">
+
+            <div class="card__articul">{{product.productid}}</div>
+            <div class="card__name">{{ product.name }}</div>
+            <div class="card__making">1 рабочий день</div>
+            <div class="card__order">
+              <div class="card__price">{{ product.price }} ₽</div>
+              <button class="card__cart-btn">
+                <div>В корзину</div>
+              </button>
+            </div>
+          </div>
+        }
+          </div>
+        </div>
+
+      }
+</div>
