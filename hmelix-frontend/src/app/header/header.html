@@ -4,10 +4,10 @@
   <div class="header__container">
     <nav class="header__nav">
 
-      <a 
-      class="header__list-logo" 
-      routerLink="/"
-      >Хмеликс</a>
+      <a class="header__list-logo" routerLink="/">
+        <img class="icons-hmel" src="/icons/hmel.svg">
+        <span>Хмеликс</span>
+      </a>
       
       <div class="header__search">
         <input
@@ -18,25 +18,20 @@
       </div>
 
       <ul class="header__list">
-        <a
-        class="header__list-item" 
-        routerLink="/api/catalog" 
-        routerLinkActive="active">
-          <!-- <img href="/hmelix-frontend/src/app/header/icons/catalog.svg"> -->
+        <a class="header__list-item" routerLink="/api/catalog" routerLinkActive="active">
+          <img class="icons-nav" src="/icons/catalog.svg">
           <span>Каталог</span>
         </a>
+        
+        <a class="header__list-item" routerLink="/api/cart" routerLinkActive="active">
+          <img class="icons-nav" src="/icons/cart.svg">
+          <span>Корзина</span>
+        </a>
 
-        <a 
-        class="header__list-item" 
-        routerLink="/api/cart" 
-        routerLinkActive="active"
-        >Корзина</a>
-
-        <a 
-        class="header__list-item" 
-        routerLink="/api/user" 
-        routerLinkActive="active"
-        >Войти</a>
+        <a class="header__list-item" routerLink="/api/user" routerLinkActive="active">
+          <img class="icons-nav" src="/icons/user.svg">
+          <span>Войти</span>
+        </a>
       </ul>
 
     </nav>
