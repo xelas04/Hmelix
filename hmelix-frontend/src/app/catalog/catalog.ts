@@ -13,12 +13,15 @@ import { CurrencyPipe } from '@angular/common';
 export class Catalog {
   private catalogService = inject(CatalogService);
   // сигналы
-  products = signal<Product[]>([]);
+  products = signal<Product[]>([]); // накопитель
   totalCount = signal(0);
   loading = signal(true);
   error = signal<string | null>(null);
   cartIds = signal<number[]>([]);
+  page = signal(1);
 
+
+  // метод - отображение totalCount
   readonly totalLabel = computed(() => {
   const n = this.totalCount();
   const mod100 = n % 100;
@@ -27,37 +30,51 @@ export class Catalog {
   if (mod10 === 1) return `${n} анализ`;
   if (mod10 >= 2 && mod10 <= 4) return `${n} анализа`;
   return `${n} анализов`;
-
-});
-
-constructor() { // метод - конструктор, 
-  this.catalogService.getProducts().subscribe({ // вызывает сервис и подписывается на данные
-    next: (data) => { // наполняем сигналы:
-      this.products.set(data.products);
-      this.totalCount.set(data.totalCount);
-      this.loading.set(false);
-    },
-    error: (err) => {
-      this.error.set('Ошибка загрузки');
-      this.loading.set(false);
-      console.error(err);
-    }
   });
-}
-  
-toggle(id: number) { // переключатель для кнопки 'В корзину'
-if (this.cartIds().includes(id)) {
-  // товар уже в корзине? - убираем его
-  this.cartIds.set(this.cartIds().filter(x => x !== id));
-  } else {
-  // товара нет в корзине? добавляем в конец
-  this.cartIds.set([...this.cartIds(), id]);
+
+
+  /* 
+  constructor вызывается при создании экземпляра Component, 
+  а Component создаётся при первом заходе на url
+  */
+  constructor() { 
+    this.loadMore();
   }
-}
-// проверка для шаблона
-isInCart(id: number): boolean {
-  return this.cartIds().includes(id);
-}
+
+  // метод отображения "Показать ещё"
+  loadMore(){
+    this.catalogService.getProducts(this.page()).subscribe({ // вызывает метод из сервиса и подписывается на данные
+      next: (data) => { // наполняем сигналы:
+        this.products.update(old => [...old, ...data.products]); // старые + новые (накопление)
+        this.totalCount.set(data.totalCount);
+        this.loading.set(false);
+        this.page.update(p => p + 1); // следующая страница
+      },
+      error: (err) => {
+        this.error.set('Ошибка загрузки');
+        this.loading.set(false);
+        console.error(err);
+      }
+    });
+  }
+
+  // сигнал, которыый сравнивает, сколько уже загружено (products().length) и сколько всего есть (totalCount)
+  hasMore = computed(() => this.products().length < this.totalCount());
+
+  // метод для будущего корзины
+  toggle(id: number) { // переключатель для кнопки 'В корзину'
+  if (this.cartIds().includes(id)) {
+    // товар уже в корзине? - убираем его
+    this.cartIds.set(this.cartIds().filter(x => x !== id));
+    } else {
+    // товара нет в корзине? добавляем в конец
+    this.cartIds.set([...this.cartIds(), id]);
+    }
+  }
+  // проверка?
+  isInCart(id: number): boolean {
+    return this.cartIds().includes(id);
+  }
 
 }
 

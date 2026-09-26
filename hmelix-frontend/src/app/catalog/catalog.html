@@ -1,4 +1,3 @@
-
 <!-- показывает данные из signals -->
 
 <div class="catalog">
@@ -34,15 +33,16 @@
           </div>
         }
       </div>
+
+    @if (hasMore()){
+      <div class="catalog__more">
+        <button class="catalog__more-btn" (click)="loadMore()">Показать ещё</button>
+      </div>
+    }
+
     </div>
 
-    <div class="catalog__more">
-      <button class="catalog__more-btn">Показать ещё</button>
-    </div>
-
-    <div class="catalog__footer">
-      
-    </div>
+    <div class="catalog__footer"></div>
 
 }
 </div>

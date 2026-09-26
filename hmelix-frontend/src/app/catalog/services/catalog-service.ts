@@ -7,8 +7,8 @@ import { ProductsResponse } from '../product';
 export class CatalogService {
   private http = inject(HttpClient);
 
-  // запрос на бэк
-  getProducts() { 
-    return this.http.get<ProductsResponse>('/api/products?page=1&pageSize=12');
+  // запрос на бэк с передачей page
+  getProducts(page: number) { 
+    return this.http.get<ProductsResponse>(`/api/products?page=${page}&pageSize=12`); // 
   }
 }
