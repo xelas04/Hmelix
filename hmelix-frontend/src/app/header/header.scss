@@ -62,13 +62,19 @@
 
 .header__list-item{
   display: flex;
-  font-size: 14px;
+  font-size: 14.5px;
   font-weight: 500;
-  margin: 0;
+  //margin: 0;
+  margin-block: auto;
   
   &.active {
     color: #5CC48C;
   }
+}
+
+.header__list-text{
+  display: flex;
+  margin-left: 5px;
 }
 
 a{
