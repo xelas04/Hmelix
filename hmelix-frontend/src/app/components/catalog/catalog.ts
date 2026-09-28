@@ -2,6 +2,7 @@ import { Component, inject, signal, forwardRef, computed } from '@angular/core';
 import { CatalogService } from './services/catalog-service';
 import { Product } from './product';
 import { CurrencyPipe } from '@angular/common';
+import { CartService } from '../../services/cart-service';
 
 @Component({
   imports: [CurrencyPipe],
@@ -11,13 +12,15 @@ import { CurrencyPipe } from '@angular/common';
 })
 
 export class Catalog {
+  // ВНЕДРЕНИЕ ЗАВИСИМОСТИ (DI) : inject(catalogService)
+  // отдаёт экземпляр catalogService
   private catalogService = inject(CatalogService);
+  private cartService = inject(CartService);
   // сигналы
   products = signal<Product[]>([]); // накопитель
   totalCount = signal(0);
   loading = signal(true);
   error = signal<string | null>(null);
-  cartIds = signal<number[]>([]);
   page = signal(1);
 
 
@@ -59,22 +62,16 @@ export class Catalog {
   }
 
   // сигнал, которыый сравнивает, сколько уже загружено (products().length) и сколько всего есть (totalCount)
+  // отдаёт true или false
   hasMore = computed(() => this.products().length < this.totalCount());
 
-  // метод для будущего корзины
-  toggle(id: number) { // переключатель для кнопки 'В корзину'
-  if (this.cartIds().includes(id)) {
-    // товар уже в корзине? - убираем его
-    this.cartIds.set(this.cartIds().filter(x => x !== id));
-    } else {
-    // товара нет в корзине? добавляем в конец
-    this.cartIds.set([...this.cartIds(), id]);
-    }
+  // переключатель - вызывается из сервиса
+  toggle(product: Product) {
+    this.cartService.toggle(product);
   }
-  // проверка?
+  // для html проверяем по айди
   isInCart(id: number): boolean {
-    return this.cartIds().includes(id);
+    return this.cartService.isInCart(id);
   }
 
 }
-
