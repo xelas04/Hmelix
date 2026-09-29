@@ -1,6 +1,11 @@
 {
   "editor.codeActionsOnSave": {
     "source.fixAll.oxc": "always",
-    "oxc.typeAware": true
+    "oxc.typeAware": true,
+
+    "oxc.enable": true,
+    "oxc.linterPath": "./node_modules/.bin/oxlint",
+    "oxc.configPath": "./.oxlintrc.json",
+    "oxc.disableNestedConfig": true
   }
 }
