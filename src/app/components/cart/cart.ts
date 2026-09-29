@@ -12,8 +12,5 @@ export class Cart {
   //массив продуктов в корзине
   readonly items = this.cartService.items;
 
-  /* читаем текущий массив товаров из сигнала
-  
-  */
   totalPrice = computed(() => this.items().reduce((sum, p) => sum + p.price, 0));
 }
