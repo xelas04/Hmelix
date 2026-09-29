@@ -1,0 +1,15 @@
+<div class="cart">
+  <p>Корзина</p>
+
+  @if (items().length == 0) {
+    <p>Корзина пуста.</p>
+  } @else {
+    @for (item of items(); track item.productid) {
+      <div class="cart__item">
+        <span>{{ item.name }} </span>
+        <span>{{ item.price }} ₽</span>
+      </div>
+    }
+    <p>Итого: {{ totalPrice() }} ₽</p>
+  }
+</div>

@@ -1,0 +1,85 @@
+.header {
+  position: fixed; // прилипает к верху
+  top: 0;
+  left: 0;
+  right: 0; // растянуть на всю ширину
+  z-index: 100; // поверх контента при скролле
+  height: 66px;
+  background: #201e1d; // тёмный фон
+  // Отступы по бокам (чтобы контент не прилипал к краям)
+  box-shadow: 0 3px 0 0 #5cc48c;
+}
+
+.header__container {
+  margin-inline: auto;
+  height: 66px;
+  max-width: 1200px;
+}
+
+.header__search {
+  margin-right: auto;
+  border-radius: 2%;
+  border: 0;
+  padding: 0;
+  color: #f3f2f2;
+  background: #f3f2f21a;
+  width: 430px;
+  height: 38px;
+}
+
+.header__nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18.5px 0px;
+  height: 66px;
+}
+
+.header__list {
+  display: flex;
+  gap: 22px;
+  margin: 0;
+  padding-left: 0;
+}
+.icons-nav {
+  margin-block: auto;
+  margin-right: 5px;
+}
+
+.header__list-logo {
+  display: flex;
+  margin-right: 26px;
+  letter-spacing: -0.42px;
+  font-size: 21px;
+  font-weight: 700;
+  align-items: center;
+}
+.icons-hmel {
+  margin-block: auto;
+  margin-right: 5px;
+}
+
+.header__list-item {
+  display: flex;
+  font-size: 14.5px;
+  font-weight: 500;
+  //margin: 0;
+  margin-block: auto;
+
+  &.active {
+    color: #5cc48c;
+  }
+}
+
+.header__list-text {
+  display: flex;
+  margin-left: 5px;
+}
+
+a {
+  color: #f3f2f2;
+}
+
+ul {
+  //font-size: 14px;
+}
