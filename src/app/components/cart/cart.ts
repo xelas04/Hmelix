@@ -1,6 +1,5 @@
 import { Component, computed, inject } from '@angular/core';
 import { CartService } from '../../services/cart-service';
-import { sum } from 'ng-zorro-antd/core/util';
 
 @Component({
   imports: [],

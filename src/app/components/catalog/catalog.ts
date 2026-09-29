@@ -1,4 +1,4 @@
-import { Component, inject, signal, forwardRef, computed } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { CatalogService } from './services/catalog-service';
 import { Product } from './product';
 import { CurrencyPipe } from '@angular/common';
