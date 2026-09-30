@@ -1,0 +1,186 @@
+﻿openapi: 3.0.4
+info:
+  title: hmelix-user
+  version: '1.0.1'
+servers:
+  - url: https://localhost:5161/
+paths: 
+
+  /api/v1/user/{user_id}:
+    parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:            
+          type: integer
+          description: Передаём user_id
+
+    get: 
+      summary: Метод получения личных данных по user_id
+      tags: 
+        - User
+      operationId: getUserById
+      responses: 
+        '200':
+          description: Успешный ответ с личными данными пользователя
+          content: 
+            application/json: 
+              schema: 
+                $ref: '#/components/schemas/User'
+        default: 
+          description: Не успешный ответ
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put: 
+      summary: Метод изменения личных данных пользователя по user_id
+      tags: 
+        - User
+      operationId: editUser
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: '#/components/schemas/UpdateUser'
+      responses:
+        '204':
+          description: Пользователь изменён
+          content:
+            'application/json': {}
+        default: 
+          description: Не успешный ответ
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Метод удаления пользователя по user_id
+      tags: 
+        - User
+      operationId: deleteUser
+      responses: 
+        '204':
+          description: Успешное удаление личных данных пользователя
+        default: 
+          description: Не успешный ответ
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/v1/user:
+    post: 
+      summary: Метод создания пользователя
+      tags: 
+        - User
+      operationId: createUser
+      requestBody: 
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              $ref: '#/components/schemas/CreateUser'
+      responses: 
+        '201':
+          description: Успешный ответ с личными данными пользователя
+          content: 
+            application/json: 
+              schema: 
+                $ref: '#/components/schemas/User'
+        default: 
+          description: Не успешный ответ
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+
+
+components:
+  schemas: 
+    User:
+      type: object
+      required:
+        - name
+        - email
+      properties:
+        user_id:
+          type: integer
+          example: 67
+        name:
+          type: string
+          example: Коля Чекушка
+        email:
+          type: string
+          example: qwerty@mail.com
+        sex:
+          type: string
+          enum: 
+            - male
+            - female
+          example: male
+        date_of_birth:
+          type: string
+          format: date
+          example: "1967.07.06"
+
+    UpdateUser:
+      type: object
+      required:
+        - name
+        - email
+      properties:
+        name:
+          type: string
+          example: Коля Чекушка
+        email:
+          type: string
+          example: qwerty@mail.com
+        sex:
+          type: string
+          enum: 
+            - male
+            - female
+          example: male
+        date_of_birth:
+          type: string
+          format: date
+          example: "1967.07.06"
+
+    CreateUser:
+      type: object
+      required:
+        - name
+        - email
+      properties:
+        name:
+          type: string
+          example: Коля Чекушка
+        email:
+          type: string
+          example: qwerty@mail.com
+        sex:
+          type: string
+          enum: 
+            - male
+            - female
+          example: male
+        date_of_birth:
+          type: string
+          format: date
+          example: "1967.07.06"
+
+    Error:
+      type: object
+      required: 
+        - code
+        - message
+      properties: 
+        code:
+          type: integer
+          example: 404
+        message:
+          type: string
+          example: "Not found"
