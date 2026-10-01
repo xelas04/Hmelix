@@ -1,14 +1,15 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { ProductsResponse } from '../product';
 
 // помечаем класс как "внедряемый" DI
 // он общий для всех компонентов
+// в новом Angular @Service() то же самое, что и
 // @Injectable + providedIn: 'root' → Angular регистрирует этот
 // класс в DI-контейнере как singleton (один экземпляр на всё
 // приложение). Любой компонент может его внедрить и получить
 // ТОТ ЖЕ объект — поэтому состояние у всех общее
-@Injectable({ providedIn: 'root' })
+@Service()
 export class CatalogService {
   // Приватный сигнал — снаружи менять нельзя, только через методы сервиса
   private http = inject(HttpClient);
