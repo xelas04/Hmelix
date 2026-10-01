@@ -36,5 +36,11 @@ namespace CatalogService.logic.services
             return _repository.GetTotalCountAsync();
         }
 
+        public async Task<List<Product>> GetPopularAsync(int page, int pageSize)
+        {
+            var offset = (page - 1) * pageSize;
+            var popular = await _repository.GetPopularAsync(pageSize, offset);
+            return popular;
+        }
     }
 }

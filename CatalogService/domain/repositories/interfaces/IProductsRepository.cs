@@ -11,5 +11,7 @@ namespace CatalogService.domain.repositories.interfaces
 
         public Task<int> GetTotalCountAsync();
 
+        public Task<List<Product>> GetPopularAsync(int limit, int offset);
+
     }
 }

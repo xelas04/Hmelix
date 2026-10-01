@@ -4,11 +4,12 @@
     {
         public Product() { } // конструктор
 
-        public Product(int ProductId, string Name, decimal Price) // конструктор
+        public Product(int ProductId, string Name, decimal Price, int Orders_Count) // конструктор
         {
             productid = ProductId;
             name = Name;
             price = Price;
+            orders_count = Orders_Count;
         }
 
         // Описание сущности
@@ -17,6 +18,8 @@
         public string name { get; set; }
 
         public decimal price { get; set; }
-    
+
+        public int orders_count { get; set; }
+
     }
 }

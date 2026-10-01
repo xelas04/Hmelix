@@ -16,7 +16,7 @@ public class ProductsController : ControllerBase
     }
     // внедряется зависимость, чтобы вызывать логику ProductsService
 
-    // api/products
+    // --- api/products ---
     [HttpGet]
     public async Task<IActionResult> GetProducts( // Здесь сразу пагинацию через query параметры
         [FromQuery] int page = 1,
@@ -37,8 +37,7 @@ public class ProductsController : ControllerBase
         });
     }
 
-    // Лучше HttpPost /search. В body будет searchQuery
-
+    // --- api/products/search ---
     [HttpPost("search")]
     public async Task<IActionResult> GetProductByName([FromBody] string searchQuery)
     {
@@ -48,5 +47,24 @@ public class ProductsController : ControllerBase
         var products = await _productService.GetProductByNameAsync(searchQuery);
 
         return Ok(products);
+    }
+
+    // --- api/products/popular ---
+    [HttpGet("popular")]
+    public async Task<IActionResult> GetPopular(
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 3)
+    {
+        // валидация
+        if (page < 1) return BadRequest("Неверно указан номер страницы");
+        if (pageSize < 1) return BadRequest("Неверно указано количество строк");
+        if (pageSize > 100) return BadRequest("Указано слишком большое количество строк");
+
+        var popular = await _productService.GetPopularAsync(page, pageSize);
+
+        return Ok(new
+        {
+            popular
+        });
     }
 }
