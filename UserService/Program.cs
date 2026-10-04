@@ -1,15 +1,16 @@
-namespace UserService
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
-            var app = builder.Build();
+var builder = WebApplication.CreateBuilder(args);
 
-            app.MapGet("/", () => "User service");
+// билдим слои
+builder.Services.AddControllers();
 
-            app.Run();
-        }
-    }
-}
+
+var app = builder.Build();
+
+app.UseHttpsRedirection();
+app.UseAuthorization();
+
+app.MapGet("/", () => "User service");
+
+app.MapControllers();
+
+app.Run();

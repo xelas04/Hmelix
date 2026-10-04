@@ -1,112 +1,206 @@
 ﻿openapi: 3.0.4
 info:
   title: hmelix-user
-  version: '1.0.1'
+  version: '1.1.0'
 servers:
   - url: https://localhost:5161/
-paths: 
 
-  /api/v1/user/{user_id}:
-    parameters:
-      - name: user_id
-        in: path
+tags:
+  - name: Auth
+    description: Аутентификация и регистрация
+  - name: User
+    description: Операции над текущим пользователем
+
+paths:
+
+  # ---------- AUTH ----------
+  /api/v1/auth/register:
+    post:
+      summary: Регистрация нового пользователя
+      tags: [Auth]
+      operationId: registerUser
+      security: []        # регистрация доступна без авторизации
+      requestBody:
         required: true
-        schema:            
-          type: integer
-          description: Передаём user_id
-
-    get: 
-      summary: Метод получения личных данных по user_id
-      tags: 
-        - User
-      operationId: getUserById
-      responses: 
-        '200':
-          description: Успешный ответ с личными данными пользователя
-          content: 
-            application/json: 
-              schema: 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterUser'
+      responses:
+        '201':
+          description: Пользователь зарегистрирован (кука устанавливается сразу)
+          headers:
+            Set-Cookie:
+              description: HttpOnly cookie с userId в JWT-токене
+              schema:
+                type: string
+                example: session=<jwt>; HttpOnly; Secure; SameSite=Strict; Path=/
+          content:
+            application/json:
+              schema:
                 $ref: '#/components/schemas/User'
-        default: 
-          description: Не успешный ответ
-          content: 
+        '409':
+          description: Пользователь с таким email уже существует
+          content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-    put: 
-      summary: Метод изменения личных данных пользователя по user_id
-      tags: 
-        - User
-      operationId: editUser
-      requestBody: 
+        default:
+          description: Неуспешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/v1/auth/login:
+    post:
+      summary: Вход по email и паролю (ставит HttpOnly cookie)
+      tags: [Auth]
+      operationId: loginUser
+      security: []        # логин доступен без авторизации
+      requestBody:
         required: true
-        content: 
-          application/json: 
-            schema: 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUser'
+      responses:
+        '200':
+          description: Успешный вход. В ответе ставится HttpOnly cookie с userId
+          headers:
+            Set-Cookie:
+              description: HttpOnly cookie с userId в JWT-токене
+              schema:
+                type: string
+                example: session=<jwt>; HttpOnly; Secure; SameSite=Strict; Path=/
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Неверный email или пароль
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Неуспешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/v1/auth/logout:
+    post:
+      summary: Выход. Удаляет cookie сессии.
+      tags: [Auth]
+      operationId: logoutUser
+      responses:
+        '204':
+          description: Успешный выход, cookie удалена
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          description: Неуспешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # ---------- USER / ME ----------
+  /api/v1/user/me:
+    get:
+      summary: Получить личные данные текущего пользователя
+      tags: [User]
+      operationId: getCurrentUser
+      responses:
+        '200':
+          description: Успешный ответ с личными данными пользователя
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          description: Неуспешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      summary: Изменить личные данные текущего пользователя
+      tags: [User]
+      operationId: updateCurrentUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
               $ref: '#/components/schemas/UpdateUser'
       responses:
         '204':
           description: Пользователь изменён
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          description: Неуспешный ответ
           content:
-            'application/json': {}
-        default: 
-          description: Не успешный ответ
-          content: 
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
     delete:
-      summary: Метод удаления пользователя по user_id
-      tags: 
-        - User
-      operationId: deleteUser
-      responses: 
+      summary: Удалить текущего пользователя
+      tags: [User]
+      operationId: deleteCurrentUser
+      responses:
         '204':
           description: Успешное удаление личных данных пользователя
-        default: 
-          description: Не успешный ответ
-          content: 
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          description: Неуспешный ответ
+          content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /api/v1/user:
-    post: 
-      summary: Метод создания пользователя
-      tags: 
-        - User
-      operationId: createUser
-      requestBody: 
-        required: true
-        content: 
-          application/json: 
-            schema: 
-              $ref: '#/components/schemas/CreateUser'
-      responses: 
-        '201':
-          description: Успешный ответ с личными данными пользователя
-          content: 
-            application/json: 
-              schema: 
-                $ref: '#/components/schemas/User'
-        default: 
-          description: Не успешный ответ
-          content: 
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-
+# Глобально применяем security ко всем методам
+# Там где нужно без авторизации — ставим security: [] ( register/login )
+security:
+  - cookieAuth: []
 
 components:
-  schemas: 
+
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: session
+      description: |
+        HttpOnly cookie с JWT-токеном
+        Внутри userId. Устанавливается методами /auth/login и /auth/register
+        Бэкенд валидирует подпись токена и извлекает userId для выполнения операций
+
+  responses:
+    Unauthorized:
+      description: Токен отсутствует или не валиден
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 401
+            message: "Unauthorized"
+
+  schemas:
     User:
       type: object
-      required:
-        - name
-        - email
+      required: [name, email]
       properties:
-        user_id:
+        userId:
           type: integer
           example: 67
         name:
@@ -114,70 +208,79 @@ components:
           example: Коля Чекушка
         email:
           type: string
+          format: email
           example: qwerty@mail.com
         sex:
           type: string
-          enum: 
-            - male
-            - female
+          enum: [male, female]
           example: male
-        date_of_birth:
+        dateOfBirth:
           type: string
           format: date
-          example: "1967.07.06"
+          example: "1967-07-06"
+
+    RegisterUser:
+      type: object
+      required: [name, email, password]
+      properties:
+        name:
+          type: string
+          example: Коля Чекушка
+        email:
+          type: string
+          format: email
+          example: qwerty@mail.com
+        password:
+          type: string
+          format: password
+          minLength: 8
+          example: "SuperSecret123"
+        sex:
+          type: string
+          enum: [male, female]
+          example: male
+        dateOfBirth:
+          type: string
+          format: date
+          example: "1967-07-06"
+
+    LoginUser:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+          example: qwerty@mail.com
+        password:
+          type: string
+          format: password
+          example: "SuperSecret123"
 
     UpdateUser:
       type: object
-      required:
-        - name
-        - email
+      required: [name, email]
       properties:
         name:
           type: string
           example: Коля Чекушка
         email:
           type: string
+          format: email
           example: qwerty@mail.com
         sex:
           type: string
-          enum: 
-            - male
-            - female
+          enum: [male, female]
           example: male
-        date_of_birth:
+        dateOfBirth:
           type: string
           format: date
-          example: "1967.07.06"
-
-    CreateUser:
-      type: object
-      required:
-        - name
-        - email
-      properties:
-        name:
-          type: string
-          example: Коля Чекушка
-        email:
-          type: string
-          example: qwerty@mail.com
-        sex:
-          type: string
-          enum: 
-            - male
-            - female
-          example: male
-        date_of_birth:
-          type: string
-          format: date
-          example: "1967.07.06"
+          example: "1967-07-06"
 
     Error:
       type: object
-      required: 
-        - code
-        - message
-      properties: 
+      required: [code, message]
+      properties:
         code:
           type: integer
           example: 404
