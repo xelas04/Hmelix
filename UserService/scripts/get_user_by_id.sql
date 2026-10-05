@@ -2,6 +2,6 @@
 
 -- скрипт получения пользователя по userId
 
-SELECT * 
+SELECT "userId", "name", "email", "sex", "dateOfBirth" 
 FROM users 
 WHERE "userId" = $1;
