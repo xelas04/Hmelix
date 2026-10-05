@@ -39,6 +39,31 @@ public class UserController : ControllerBase
         return Ok(response);
     }
 
+    // ---POST-api/user/login---
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] UserLoginDto userLoginDto)
+    {
+        // проверка логина / пароля
+        var user = await _userService.UserLoginAsync(userLoginDto);
+        if (user == null)
+            return Unauthorized("Неверный логин или пароль");
+
+        // Генерируем токен
+        var token = _tokenService.GenerateToken(user.userId);
+
+        // Ставим cookie с токеном
+        Response.Cookies.Append("access_token", token, new CookieOptions
+        {
+            HttpOnly = true,     // JS не видит — защита от XSS
+            Secure = true,       // только HTTPS
+            SameSite = SameSiteMode.Strict,  // защита от CSRF
+            Expires = DateTime.UtcNow.AddDays(7)
+        });
+
+        // Возвращаем ответ
+        return Ok(user);
+    }
+
     //---GET-api/user/me---
     [Authorize] // только после успешной авторизации:
     [HttpGet("me")]

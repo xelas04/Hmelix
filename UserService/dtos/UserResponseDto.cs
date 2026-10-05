@@ -1,6 +1,6 @@
 namespace UserService.dtos;
 
-// модель обьекта, который будет возвращать метод регистрации
+// модель обьекта, который возвращают методы
 
 public record UserResponseDto(
     int userId,

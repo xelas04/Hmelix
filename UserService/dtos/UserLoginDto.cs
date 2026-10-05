@@ -1,8 +1,8 @@
 namespace UserService.dtos;
 
+// модель обьекта
+
 public record UserLoginDto(
-    string name, 
-    string email, 
-    string sex, 
-    string dateOfBirth
+    string email,
+    string password
 );

@@ -1,4 +1,5 @@
 ﻿using Npgsql;
+using System.Data;
 using UserService.domain.entities;
 using UserService.domain.repositories.interfaces;
 using UserService.dtos;
@@ -46,4 +47,41 @@ public class UserRepository : IUserRepository
             email = userRegistrationDto.email // из dto
         };
     }
+
+    // --- UserLogin ---
+    public async Task<User?> GetUserByEmailAsync(string email)
+    {
+        // соединение с БД
+        await using var connection = new NpgsqlConnection(_connectionString);
+        await connection.OpenAsync();
+
+        // Создаем SQL-команду заполнения данных пользователя
+        await using var cmd = new NpgsqlCommand(
+            @"SELECT ""userId"", ""name"", ""email"", ""password"", ""sex"", ""dateOfBirth"" 
+            FROM users 
+            WHERE ""email"" = @email
+            LIMIT 1 ;",
+            connection
+        );
+
+        // завводим в SQL переменную
+        cmd.Parameters.AddWithValue("@email", email);
+
+        await using var reader = await cmd.ExecuteReaderAsync(); // извлекаем
+        if (await reader.ReadAsync())
+        {
+            return new User
+            {
+                userId = reader.GetInt32(0),
+                name = reader.GetString(1),
+                email = reader.GetString(2),
+                password = reader.GetString(3),
+                sex = reader.GetString(4),
+                dateOfBirth = reader.GetFieldValue<DateOnly>(5)
+            };
+        }
+
+        return null;
+    }
+
 }
