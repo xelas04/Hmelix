@@ -23,7 +23,7 @@ export class Catalog {
   page = signal(1);
 
   // метод - отображение totalCount
-  readonly totalLabel = computed(() => {
+  public readonly totalLabel = computed(() => {
     const n = this.totalCount();
     const mod100 = n % 100;
     if (mod100 >= 11 && mod100 <= 14) return `${n} анализов`;
