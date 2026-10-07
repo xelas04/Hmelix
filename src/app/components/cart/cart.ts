@@ -24,5 +24,10 @@ export class Cart {
     return `${n} анализов`;
   });
 
+  // метод для удаления каждого продукта в корзине
+  remove(id: number) {
+    this.cartService.remove(id);
+  }
+
   totalPrice = computed(() => this.items().reduce((sum, p) => sum + p.price, 0));
 }

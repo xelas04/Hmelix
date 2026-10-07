@@ -39,6 +39,13 @@ export class CartService {
     }
   }
 
+  // метод для удаления каждого продукта в корзине
+  remove(id: number) {
+    // filter оставляет всех, кроме этого id = новый массив
+    // effect сам обновит JSON в localStorage
+    this.items.update((list) => list.filter((p) => p.productid !== id));
+  }
+
   // проверка?
   isInCart(id: number): boolean {
     return this.items().some((p) => p.productid === id);
