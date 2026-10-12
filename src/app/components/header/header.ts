@@ -2,6 +2,8 @@ import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { CartService } from '../../services/cart-service';
+import { ModalService } from '../../services/modal-service';
+import { AuthModal } from '../auth/auth-modal/auth-modal';
 
 @Component({
   imports: [RouterLink, RouterLinkActive, NzBreadCrumbModule],
@@ -15,7 +17,13 @@ export class Header {
   // Тот же CartService, что и в Catalog - singleton.
   // Меняется в одном компоненте → видно в другом.
   private cartService = inject(CartService);
+  private modalService = inject(ModalService);
 
   // читает счётчик
   readonly cartCount = this.cartService.count;
+
+  // метод модалки входа - передаём класс
+  openLogin() {
+    this.modalService.open(AuthModal);
+  }
 }

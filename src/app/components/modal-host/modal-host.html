@@ -1,0 +1,9 @@
+@if (modalService.component(); as comp) {
+  <!-- оверлей: клик по нему закрывает -->
+  <div class="backdrop" (click)="onBackdrop($event)">
+    <div class="container">
+      <!-- NgComponentOutlet рендерит компонент из сигнала -->
+      <ng-container [ngComponentOutlet]="comp" />
+    </div>
+  </div>
+}

@@ -1,6 +1,8 @@
 import { Component, computed, inject } from '@angular/core';
 import { CartService } from '../../services/cart-service';
 import { RouterLink } from '@angular/router';
+import { ModalService } from '../../services/modal-service';
+import { AuthModal } from '../auth/auth-modal/auth-modal';
 
 @Component({
   imports: [RouterLink],
@@ -10,6 +12,7 @@ import { RouterLink } from '@angular/router';
 })
 export class Cart {
   private cartService = inject(CartService);
+  private modalService = inject(ModalService);
   //массив продуктов в корзине
   readonly items = this.cartService.items;
 
@@ -30,4 +33,9 @@ export class Cart {
   }
 
   totalPrice = computed(() => this.items().reduce((sum, p) => sum + p.price, 0));
+
+  // метод модалки входа - передаём класс
+  openLogin() {
+    this.modalService.open(AuthModal);
+  }
 }

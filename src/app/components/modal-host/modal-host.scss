@@ -1,0 +1,17 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.container {
+  background: #f3f2f2;
+  border-radius: 3px;
+  height: auto;
+  width: 500px;
+  padding: 44px 34px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+}

@@ -1,0 +1,69 @@
+<div class="modal">
+  <div class="modal__tabs">
+    @if (mode() === 'login') {
+      <div class="heading">Вход</div>
+      <div>
+        <div class="label">Email</div>
+        <input class="input" formControlName="email" placeholder="Email" type="email" />
+      </div>
+      <div>
+        <div class="label">Пароль</div>
+        <input class="input" formControlName="password" placeholder="Пароль" type="password" />
+      </div>
+      <button class="button" [class.active]="mode() === 'login'" (click)="mode.set('login')">
+        Войти
+      </button>
+      <div class="basement">
+        Нет аккаунта?
+        <span class="auth" [class.active]="mode() === 'register'" (click)="mode.set('register')"
+          >Зарегистрироваться</span
+        >
+      </div>
+    } @else {
+      <div class="heading">Регистрация</div>
+      <div>
+        <div class="label">ФИО</div>
+        <input class="input" formControlName="name" placeholder="ФИО" />
+      </div>
+      <div>
+        <div class="label">Email</div>
+        <input class="input" formControlName="email" placeholder="Email" type="email" />
+      </div>
+      <div>
+        <div class="label">Пароль</div>
+        <input
+          class="input"
+          formControlName="password"
+          placeholder="Не менее восьми символов"
+          type="password"
+        />
+      </div>
+      <div>
+        <div class="label">Пол</div>
+        <div class="gender">
+          <label class="gender__option">
+            <input type="radio" name="gender" value="female" checked />
+            <span>Женский</span>
+          </label>
+          <label class="gender__option">
+            <input type="radio" name="gender" value="male" />
+            <span>Мужской</span>
+          </label>
+        </div>
+      </div>
+      <div>
+        <div class="label">Дата рождения</div>
+        <input class="input" formControlName="date" placeholder="дд/мм/гггг" type="date" />
+      </div>
+      <button class="button" [class.active]="mode() === 'register'" (click)="mode.set('register')">
+        Создать аккаунт
+      </button>
+      <div class="basement">
+        Уже есть аккаунт?
+        <span class="auth" [class.active]="mode() === 'login'" (click)="mode.set('login')"
+          >Войти</span
+        >
+      </div>
+    }
+  </div>
+</div>

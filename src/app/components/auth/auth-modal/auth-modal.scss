@@ -1,0 +1,107 @@
+.heading {
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 28px;
+  letter-spacing: -0.5px;
+  margin-bottom: 22px;
+}
+
+.label {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18.6px;
+  letter-spacing: 0px;
+  margin-bottom: 5px;
+  vertical-align: middle;
+  color: #201e1db2;
+}
+
+.input {
+  height: 36px;
+  width: 100%;
+  margin-bottom: 16px;
+  padding-left: 10px;
+  border: 1px;
+  border-color: #201e1da6;
+  border-radius: 3px;
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: 0px;
+  color: #000000;
+  background: #eae9e9;
+  outline: none;
+}
+
+.gender {
+  height: 36px;
+  display: inline-flex;
+  border: 1px #201e1d29;
+  overflow: hidden;
+  margin-bottom: 16px;
+  border-radius: 3px;
+  background-color: #d3d3d3b2;
+}
+.gender__option {
+  cursor: pointer;
+}
+.gender__option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.gender__option span {
+  border: 1px #201e1d29;
+  display: block;
+  padding: 7px 20px;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+/* разделитель между вариантами */
+.gender__option + .gender__option span {
+  border-left: 1px solid #a8a8a8b2;
+}
+.gender__option span:hover {
+  background: #d3d3d3b2;
+}
+/* выбранное состояние */
+.gender__option input:checked + span {
+  background: #0f8a4f;
+  color: #ffffff;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 42px;
+  margin-bottom: 16px;
+  text-align: center;
+  padding: 10px 18px;
+  background-color: #0f8a4f;
+  border: 0px;
+  border-radius: 3px;
+  color: #f3f2f2;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  letter-spacing: 0px;
+  cursor: pointer;
+  transition:
+    background 1s ease,
+    color 1s ease;
+}
+
+.basement {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18.6px;
+  letter-spacing: 0px;
+  vertical-align: middle;
+  color: #201e1db2;
+}
+.auth {
+  cursor: pointer;
+  color: #0f8a4f;
+}

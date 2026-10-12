@@ -1,6 +1,20 @@
 {
-  "/api/**": {
+  "/api/products**": {
     "target": "https://localhost:5151",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+
+  "/api/products/**": {
+    "target": "https://localhost:5151",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+
+  "/api/user/**": {
+    "target": "https://localhost:5161",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"

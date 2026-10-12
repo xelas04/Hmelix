@@ -49,7 +49,12 @@
           <span class="header__list-text">Корзина - {{ cartCount() }}</span>
         </a>
 
-        <a class="header__list-item" routerLink="/api/user" routerLinkActive="active">
+        <a
+          class="header__list-item"
+          /*routerLink="/api/user"*/
+          (click)="openLogin()"
+          routerLinkActive="active"
+        >
           <svg
             width="22"
             height="22"

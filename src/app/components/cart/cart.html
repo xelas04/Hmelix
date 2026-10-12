@@ -65,7 +65,9 @@
           <div class="cart__order-total-price-left">Всего</div>
           <div class="cart__order-total-price-right">{{ totalPrice() }} ₽</div>
         </div>
-        <button class="cart__order-btn" routerLink="/api/user">Оформить заказ</button>
+        <button class="cart__order-btn" /*routerLink="/api/user"*/ (click)="openLogin()">
+          Оформить заказ
+        </button>
         <div class="cart__order-to-catalog">
           <a>
             <span routerLink="/api/catalog"> Добавить ещё анализы </span>
