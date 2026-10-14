@@ -11,7 +11,7 @@ CREATE DATABASE catalog
 -- создание таблицы products
 
 CREATE TABLE products (
-	product_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+	"productId" INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 	name VARCHAR(50) NOT NULL,
 	price NUMERIC(10, 2)
 );
@@ -20,13 +20,13 @@ CREATE TABLE products (
 
 SELECT * -- вернуть все колонки
 FROM products -- из таблицы products
-WHERE name LIKE search_name; -- где name совпадает с search_name
+WHERE name LIKE @searchName; -- где name совпадает с search_name
 
 -- скрипт поиска по id
 
 SELECT * 
 FROM products 
-WHERE product_id = id;
+WHERE "productId" = id;
 
 -- скрипт получения всех строк в БД (без пагинации)
 

@@ -6,5 +6,5 @@
 
 SELECT * -- выбрать все колонки
 FROM products -- из таблицы products
-ORDER BY orders_count DESC -- сортировать по orders_count по убыванию
+ORDER BY "ordersCount" DESC -- сортировать по orders_count по убыванию
 LIMIT 3 OFFSET 0; -- по 3 строки, первой страницы

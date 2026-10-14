@@ -4,4 +4,4 @@
 
 SELECT * 
 FROM products 
-WHERE product_id = id;
+WHERE "productId" = id;

@@ -15,7 +15,7 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 
-app.MapGet("/", () => "CatalogService");
+app.MapGet("/", () => "Catalog service");
 
 app.MapControllers();
 
