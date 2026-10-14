@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using UserService.domain.entities;
 using UserService.dtos;
 using UserService.logic.interfaces;
 
@@ -24,7 +25,7 @@ public class UserController : ControllerBase
         var response = await _userService.UserRegistrationAsync(userRegistrationDto);
 
         // Генерируем токен
-        var token = _tokenService.GenerateToken(response.userId);
+        var token = _tokenService.GenerateToken(response);
 
         // Ставим cookie с токеном
         Response.Cookies.Append("access_token", token, new CookieOptions
@@ -49,7 +50,7 @@ public class UserController : ControllerBase
             return Unauthorized("Неверный логин или пароль");
 
         // Генерируем токен
-        var token = _tokenService.GenerateToken(user.userId);
+        var token = _tokenService.GenerateToken(user);
 
         // Ставим cookie с токеном
         Response.Cookies.Append("access_token", token, new CookieOptions
@@ -67,10 +68,15 @@ public class UserController : ControllerBase
     //---GET-api/user/me---
     [Authorize] // только после успешной авторизации:
     [HttpGet("me")]
-    public IActionResult GetMe()
+    [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)] // ответ не кэшируется
+    public async Task<IActionResult> GetMe()
     {
         var userId = User.FindFirst("userId")?.Value;
-        return Ok(new { userId });
+        var name = User.FindFirst("name")?.Value;
+        var email = User.FindFirst("email")?.Value;
+
+        return Ok(new { userId, name, email });
+
     }
 
 }

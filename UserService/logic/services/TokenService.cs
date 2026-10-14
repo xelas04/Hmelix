@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using UserService.dtos;
 
 namespace UserService.logic.services;
 
@@ -14,11 +15,13 @@ public class TokenService : ITokenService
         _secretKey = config["Jwt:SecretKey"]!;
     }
 
-    public string GenerateToken(int userId)
+    public string GenerateToken(UserResponseDto userDto)
     {
         var claims = new[] // создание полезных данных внутри токена, которые бэкэнд сможет прочитать при следующем запросе
         {
-            new Claim("userId", userId.ToString())
+            new Claim("userId", userDto.userId.ToString()),
+            new Claim("name", userDto.name),
+            new Claim("email", userDto.email)
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
