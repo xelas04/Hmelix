@@ -3,6 +3,7 @@ import { CartService } from '../../services/cart-service';
 import { RouterLink } from '@angular/router';
 import { ModalService } from '../../services/modal-service';
 import { AuthModal } from '../auth/auth-modal/auth-modal';
+import { AuthService } from '../../services/auth/auth-service';
 
 @Component({
   imports: [RouterLink],
@@ -13,6 +14,8 @@ import { AuthModal } from '../auth/auth-modal/auth-modal';
 export class Cart {
   private cartService = inject(CartService);
   private modalService = inject(ModalService);
+  authService = inject(AuthService);
+
   //массив продуктов в корзине
   readonly items = this.cartService.items;
 

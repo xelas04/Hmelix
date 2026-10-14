@@ -16,6 +16,9 @@ export class App {
   private authService = inject(AuthService);
 
   ngOnInit() {
-    this.authService.getMe().subscribe(); // если кука жива — user заполнится
+    this.authService.getMe().subscribe({
+      next: (user) => console.log('getMe:', user),
+      error: (err) => console.error('getMe error:', err),
+    }); // если кука жива — user заполнится
   }
 }

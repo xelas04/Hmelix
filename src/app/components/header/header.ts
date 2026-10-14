@@ -4,6 +4,7 @@ import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { CartService } from '../../services/cart-service';
 import { ModalService } from '../../services/modal-service';
 import { AuthModal } from '../auth/auth-modal/auth-modal';
+import { AuthService } from '../../services/auth/auth-service';
 
 @Component({
   imports: [RouterLink, RouterLinkActive, NzBreadCrumbModule],
@@ -18,6 +19,9 @@ export class Header {
   // Меняется в одном компоненте → видно в другом.
   private cartService = inject(CartService);
   private modalService = inject(ModalService);
+  authService = inject(AuthService);
+
+  //readonly authService = this.authService.user;
 
   // читает счётчик
   readonly cartCount = this.cartService.count;

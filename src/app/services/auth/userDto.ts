@@ -14,8 +14,8 @@ export interface LoginDto {
 }
 
 // ответ от бэка
-export interface User {
-  userId: number; // ← проверь по ответу: userId или user_id?
+export interface UserDto {
+  userId: number;
   name: string;
   email: string;
   sex?: string;
