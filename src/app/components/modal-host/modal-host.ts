@@ -8,6 +8,7 @@ import { NgComponentOutlet } from '@angular/common';
   styleUrl: './modal-host.scss',
   templateUrl: './modal-host.html',
 })
+// хост слушает ModalService и реагирует рендером через ngComponentOutlet
 export class ModalHost {
   modalService = inject(ModalService);
 
