@@ -25,7 +25,7 @@ public class UserController : ControllerBase
         var response = await _userService.UserRegistrationAsync(userRegistrationDto);
 
         // Генерируем токен
-        var token = _tokenService.GenerateToken(response);
+        var token = _tokenService.GenerateToken(response.userId);
 
         // Ставим cookie с токеном
         Response.Cookies.Append("access_token", token, new CookieOptions
@@ -50,7 +50,7 @@ public class UserController : ControllerBase
             return Unauthorized("Неверный логин или пароль");
 
         // Генерируем токен
-        var token = _tokenService.GenerateToken(user);
+        var token = _tokenService.GenerateToken(user.userId);
 
         // Ставим cookie с токеном
         Response.Cookies.Append("access_token", token, new CookieOptions
@@ -71,11 +71,15 @@ public class UserController : ControllerBase
     [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)] // ответ не кэшируется
     public async Task<IActionResult> GetMe()
     {
-        var userId = User.FindFirst("userId")?.Value;
-        var name = User.FindFirst("name")?.Value;
-        var email = User.FindFirst("email")?.Value;
 
-        return Ok(new { userId, name, email });
+        var userIdClaim = User.FindFirst("userId")?.Value;
+        if (userIdClaim == null) return Unauthorized();
+
+        var userId = int.Parse(userIdClaim);
+        var user = await _userService.GetUserByIdAsync(userId);
+        if (user == null) return NotFound();
+
+        return Ok(user);
 
     }
 

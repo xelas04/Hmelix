@@ -8,4 +8,6 @@ public interface IUserService
     public Task<UserResponseDto> UserRegistrationAsync(UserRegistrationDto userRegistrationDto); // registrarion
 
     public Task<UserResponseDto?> UserLoginAsync(UserLoginDto userLoginDto); // login
+
+    public Task<UserResponseDto?> GetUserByIdAsync(int userId); // user/me
 }

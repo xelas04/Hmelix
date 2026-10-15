@@ -5,5 +5,7 @@ namespace UserService.dtos;
 public record UserResponseDto(
     int userId,
     string name, 
-    string email
+    string email,
+    string? sex,
+    DateOnly? dateOfBirth
 );

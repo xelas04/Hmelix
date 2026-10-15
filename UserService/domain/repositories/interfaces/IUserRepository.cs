@@ -9,4 +9,6 @@ public interface IUserRepository
 
     public Task<User?> GetUserByEmailAsync(string email); // login
 
+    public Task<User?> GetUserByIdAsync(int userId); // user/me
+
 }

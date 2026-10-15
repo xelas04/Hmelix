@@ -1,6 +1,7 @@
+using UserService.domain.entities;
+using UserService.domain.repositories.interfaces;
 using UserService.dtos;
 using UserService.logic.interfaces;
-using UserService.domain.repositories.interfaces;
 
 namespace UserService.logic.services;
 
@@ -16,11 +17,8 @@ public class UserService : IUserService
     {
         var user = await _userRepository.UserRegistrationAsync(userRegistrationDto); // перенаправляем DTO в репозиторий
 
-        return new UserResponseDto( //  процесс маппинга (преобразования) данных
-            user.userId,
-            user.name,
-            user.email
-        );
+        // маппим в DTO
+        return new UserResponseDto(user.userId, user.name, user.email, user.sex, user.dateOfBirth);
     }
 
     public async Task<UserResponseDto?> UserLoginAsync(UserLoginDto userLoginDto)
@@ -33,6 +31,18 @@ public class UserService : IUserService
         if (user.password != userLoginDto.password) return null;
 
         // маппим в DTO
-        return new UserResponseDto(user.userId, user.name, user.email);
+        return new UserResponseDto(user.userId, user.name, user.email, user.sex, user.dateOfBirth);
+    }
+
+    public async Task<UserResponseDto?> GetUserByIdAsync(int userId)
+    {
+        // идём в репозиторий за сущностью
+        var user = await _userRepository.GetUserByIdAsync(userId);
+
+        // если не нашли — null. Контроллер вернёт 404
+        if (user is null) return null;
+
+        // маппинг: entity → DTO. Только разрешённые поля
+        return new UserResponseDto(user.userId, user.name, user.email, user.sex, user.dateOfBirth);
     }
 }

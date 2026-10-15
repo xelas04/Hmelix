@@ -15,13 +15,11 @@ public class TokenService : ITokenService
         _secretKey = config["Jwt:SecretKey"]!;
     }
 
-    public string GenerateToken(UserResponseDto userDto)
+    public string GenerateToken(int userId)
     {
         var claims = new[] // создание полезных данных внутри токена, которые бэкэнд сможет прочитать при следующем запросе
         {
-            new Claim("userId", userDto.userId.ToString()),
-            new Claim("name", userDto.name),
-            new Claim("email", userDto.email)
+            new Claim("userId", userId.ToString())
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
@@ -29,7 +27,7 @@ public class TokenService : ITokenService
 
         var token = new JwtSecurityToken( // собираем токен
             claims: claims,
-            expires: DateTime.UtcNow.AddDays(7), // время жизни токена в сутках
+            expires: DateTime.UtcNow.AddDays(1), // время жизни токена в сутках
             signingCredentials: creds); // криптографическая подпись
 
         return new JwtSecurityTokenHandler().WriteToken(token);

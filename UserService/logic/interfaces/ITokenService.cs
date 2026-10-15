@@ -5,5 +5,5 @@ namespace UserService.logic.interfaces;
 
 public interface ITokenService
 {
-    string GenerateToken(UserResponseDto userDto);
+    string GenerateToken(int userId);
 }

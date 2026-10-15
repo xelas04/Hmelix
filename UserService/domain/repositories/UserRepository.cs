@@ -1,5 +1,4 @@
 ﻿using Npgsql;
-using System.Data;
 using UserService.domain.entities;
 using UserService.domain.repositories.interfaces;
 using UserService.dtos;
@@ -44,7 +43,9 @@ public class UserRepository : IUserRepository
         {
             userId = userId, // из БД
             name = userRegistrationDto.name, // из dto
-            email = userRegistrationDto.email // из dto
+            email = userRegistrationDto.email, // из dto
+            sex = userRegistrationDto.sex,
+            dateOfBirth = userRegistrationDto.dateOfBirth
         };
     }
 
@@ -84,4 +85,36 @@ public class UserRepository : IUserRepository
         return null;
     }
 
+    public async Task<User?> GetUserByIdAsync(int userId)
+    {
+        // соединение с БД
+        await using var connection = new NpgsqlConnection(_connectionString);
+        await connection.OpenAsync();
+
+        // Создаем SQL-команду заполнения данных пользователя
+        await using var cmd = new NpgsqlCommand(
+            @"SELECT ""userId"", ""name"", ""email"", ""sex"", ""dateOfBirth"" 
+            FROM users 
+            WHERE ""userId"" = @userId;",
+            connection
+        );
+
+        // завводим в SQL переменную
+        cmd.Parameters.AddWithValue("@userId", userId);
+
+        await using var reader = await cmd.ExecuteReaderAsync(); // извлекаем
+        if (await reader.ReadAsync())
+        {
+            return new User
+            {
+                userId = reader.GetInt32(0),
+                name = reader.GetString(1),
+                email = reader.GetString(2),
+                sex = reader.GetString(3),
+                dateOfBirth = reader.GetFieldValue<DateOnly>(4)
+            };
+        }
+
+        return null;
+    }
 }
