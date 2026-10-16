@@ -19,9 +19,7 @@ export class Header {
   // Меняется в одном компоненте → видно в другом.
   private cartService = inject(CartService);
   private modalService = inject(ModalService);
-  authService = inject(AuthService);
-
-  //readonly authService = this.authService.user;
+  authService = inject(AuthService); // public
 
   // читает счётчик
   readonly cartCount = this.cartService.count;
