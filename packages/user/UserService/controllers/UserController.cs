@@ -1,0 +1,86 @@
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using UserService.domain.entities;
+using UserService.dtos;
+using UserService.logic.interfaces;
+
+namespace UserService.controllers;
+
+[Route("/api/user")]
+[ApiController]
+public class UserController : ControllerBase
+{
+    private readonly IUserService _userService;
+    private readonly ITokenService _tokenService;
+    public UserController(IUserService userService, ITokenService tokenService)
+    {
+        _userService = userService;
+        _tokenService = tokenService;
+    }
+
+    // ---POST-api/user/registation---
+    [HttpPost("registration")]
+    public async Task<IActionResult> Register([FromBody] UserRegistrationDto userRegistrationDto)
+    {
+        var response = await _userService.UserRegistrationAsync(userRegistrationDto);
+
+        // Генерируем токен
+        var token = _tokenService.GenerateToken(response.userId);
+
+        // Ставим cookie с токеном
+        Response.Cookies.Append("access_token", token, new CookieOptions
+        {
+            HttpOnly = true,     // JS не видит — защита от XSS
+            Secure = true,       // только HTTPS
+            SameSite = SameSiteMode.Strict,  // защита от CSRF
+            Expires = DateTime.UtcNow.AddDays(7)
+        });
+
+        // Возвращаем ответ
+        return Ok(response);
+    }
+
+    // ---POST-api/user/login---
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] UserLoginDto userLoginDto)
+    {
+        // проверка логина / пароля
+        var user = await _userService.UserLoginAsync(userLoginDto);
+        if (user == null)
+            return Unauthorized("Неверный логин или пароль");
+
+        // Генерируем токен
+        var token = _tokenService.GenerateToken(user.userId);
+
+        // Ставим cookie с токеном
+        Response.Cookies.Append("access_token", token, new CookieOptions
+        {
+            HttpOnly = true,     // JS не видит — защита от XSS
+            Secure = true,       // только HTTPS
+            SameSite = SameSiteMode.Strict,  // защита от CSRF
+            Expires = DateTime.UtcNow.AddDays(7)
+        });
+
+        // Возвращаем ответ
+        return Ok(user);
+    }
+
+    //---GET-api/user/me---
+    [Authorize] // только после успешной авторизации:
+    [HttpGet("me")]
+    [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)] // ответ не кэшируется
+    public async Task<IActionResult> GetMe()
+    {
+
+        var userIdClaim = User.FindFirst("userId")?.Value;
+        if (userIdClaim == null) return Unauthorized();
+
+        var userId = int.Parse(userIdClaim);
+        var user = await _userService.GetUserByIdAsync(userId);
+        if (user == null) return NotFound();
+
+        return Ok(user);
+
+    }
+
+}
