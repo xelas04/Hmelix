@@ -1,11 +1,11 @@
 openapi: 3.0.4
 info:
   title: hmelix-catalog
-  version: '1.0.1'
+  version: '1.0.2'
 servers:
-  - url: https://localhost:7162/
+  - url: https://localhost:5151/
 paths: 
-  /api/v1/catalog:
+  /api/v1/products:
 
     get: 
       summary: Метод получения списка продуктов
@@ -57,10 +57,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /api/v1/search:
+  /api/v1/products/search:
 
     get:
-      summary: Метод поиска продуктов
+      summary: Метод поиска продуктов строго по названию
       tags: 
         - Catalog
       operationId: search
@@ -117,6 +117,56 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /api/v1/products/popular:
+
+    get: 
+      summary: Метод получения списка популярных продуктов
+      tags: 
+        - Catalog
+      operationId: getPopular
+      parameters:
+        - name: page
+          in: query
+          required: true
+          schema:
+            type: integer
+            default: 1
+          description: Номер страницы
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+            default: 3
+          description: Количество записей на странице
+      
+      responses: 
+        '200':
+          description: Успешный ответ со списком популярных продуктов
+          content: 
+            application/json: 
+              schema: 
+                type: object
+                properties: 
+                  items:
+                    $ref: '#/components/schemas/Products'
+                  pagination:
+                    type: object
+                    required:
+                      - page
+                      - pageSize
+                    properties:
+                      page: 
+                        type: integer
+                      pageSize:
+                        type: integer
+        default: 
+          description: Не успешный ответ
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 
 
 components:
@@ -130,14 +180,11 @@ components:
       properties:
         product_id:
           type: integer
-          example: 618
         name:
           type: string
-          example: Blood
         price:
           type: number
           format: decimal
-          example: 12.45
 
     Products:
       type: array
