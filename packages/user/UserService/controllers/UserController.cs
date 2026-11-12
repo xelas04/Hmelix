@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using UserService.domain.entities;
 using UserService.dtos;
 using UserService.logic.interfaces;
 
